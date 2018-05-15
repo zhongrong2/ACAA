@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="test">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+	   
+       div{
+       	    width:100px;height:100px;
+            background: #88ff5c;
+            position: absolute;
+            cursor:move;
+       }
+	</style>
+</head>
+<body ng-controller="carCtrl">
+	<div id="box" drag>djkhksd</div>
+</body>
+</html>
+<script src="angular.js"></script>
+<script src="jquery.js"></script>
+<script>
+	var app=angular.module("test",[]);
+	app.controller("carCtrl",["$scope",function($scope)
+	{
+		
+	}])
+	app.directive('drag',[function(){
+		return {
+			restrict:'A', 
+			template:'<div><div>', 
+			replace:true,  
+			link:function($scope,el){ 
+				var ml=window.innerWidth-$(el)[0].offsetWidth;
+                var mt=window.innerHeight-$(el)[0].offsetHeight;
+				$(el)[0].onmousedown=function(e){
+					var ox=e.offsetX;
+                    var oy=e.offsetY;
+                    console.log(ox,oy);
+                    document.onmousemove=function(e){
+			              var cx=e.clientX;
+			              var cy=e.clientY;
+			              var mx=cx-ox;
+			              var my=cy-oy;
+			              if(mx>=ml){
+			                  mx=ml;
+			              }
+			              if(mx<=0){
+			                  mx=0;
+			              }
+			              if(my>mt){
+			                  my=mt;
+			              }
+			              if(my<0){
+			                  my=0;
+			              }
+			            $(el)[0].style.left=mx+"px";
+			            $(el)[0].style.top=my+"px";
+		          };
+		          $(el)[0].onmouseup=function(){
+		             document.onmousemove=null;
+		             $(el)[0].onmouseup=null;
+		          };
+				}
+			}
+		}
+	}]);
+	
+</script>
